@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ツリーメニュー（配列データ版）</title>
+<style>
+  body {
+    margin: 0;
+    background-color: #048DC8;
+/*  background-color: #444444; */
+    height: 100vh;
+/*  background: linear-gradient(to bottom, #00A3E8, #232323); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 0
+  }
+
+  .catalog-title {
+    width: 100%;
+    text-align: center;
+    padding-top: 30px;
+    color: #EEEE00;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+#treeContainer {
+  text-align: left;   /* ← 左寄せにする */
+  margin: 0 auto;     /* ページ中央に配置する場合 */
+  width: 300px;       /* 必要なら幅を固定 */
+}
+
+  /* === ツリーメニュー === */
+  .tree {
+    list-style-type: none;
+    padding-left: 0px;
+    text-align: left;
+    display: block;
+    margin: 0 auto 0 30px;
+  }
+
+  .tree li {
+    margin: 4px 0;
+    text-align: left;
+    position: relative;
+  }
+
+  .tree label {
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .tree a {
+    color: #ff0;
+    text-decoration: none;
+  }
+
+  .tree li a::before {
+    content: "•";
+    color: #0ff;       /* 点の色（背景に合わせて変更） */
+    font-weight: bold; /* 少し目立たせたい場合 */
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;  /* 左に寄せてラベルのラインにそろえる */
+  }
+
+  .tree a:hover {
+    text-decoration: underline;
+  }
+
+  /* チェックボックスを非表示 */
+  .tree input[type="checkbox"] {
+    display: none;
+  }
+
+  /* 子要素非表示 */
+  .tree input[type="checkbox"] ~ ul {
+    display: none;
+  }
+
+  /* チェック時に展開 */
+  .tree input[type="checkbox"]:checked ~ ul {
+    display: block;
+  }
+
+  /* 矢印アイコン */
+  .tree label::before {
+    content: "▶";
+    position: absolute;
+    left: -15px;
+    color: #fff;
+    font-size: 0.8em;
+  }
+
+  .tree input[type="checkbox"]:checked + label::before {
+    content: "▼";
+  }
+</style>
+</head>
+
+<body>
+<h2><a href="menu.html" target="menu"><img src="image/logo.png" width="260" height="170" alt="Logo"></a></h2>
+
+<div class="catalog-title">■ カタログ ■</div>
+<div id="treeContainer"></div>
+
+<script>
+  // === ツリーデータ ===
+  const treeData = [
+    {
+      name: "ネオジム製品",
+      children: [
+        {
+          name: "丸形磁石",
+          children: [
+            {
+              name: "N35",
+              children: [
+                {
+                  name: "直径φ3mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DYP3NBHF?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0C7QCJVZ3?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DSHYCPFL?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0CLV1QBDF?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ4mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0BRSPJS8H?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0C7WMFGP4?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0BPZTYN84?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0BPZX3KPR?th=1" },
+                    { name: "厚さ4mm", url: "https://www.amazon.co.jp/dp/B0BSLFGBJG?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ5mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BQ1HP1D5?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0BQ173V32?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ6mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0C7QLD25K?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DSL9RN9K?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0DK8X3G8H?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ7mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BSMM5266?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0BPZZK13G?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ8mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DNQ9986T?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DKXXM7QJ?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DNQB484G?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0C84K2L5Y?th=1" },
+                    { name: "厚さ4mm", url: "https://www.amazon.co.jp/dp/B0CCRZ5DP9?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ9mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DNMDFFBX?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DNMHXVMN?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DNMNRXQS?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ10mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DPQP8BNB?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DPQQ5J2K?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0DPQQNLDY?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0C7YY6LLH?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ12mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0G129658T?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0CHFB8WB3?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0CHJ2WXHB?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ13mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0G19BJN8W?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0G14FTC6J?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0G1465NXW?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ14mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0G13L8Y89?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0G14J9DY3?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0G14KCB7J?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ15mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0CLP1CPLN?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0BQ1B9KZT?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0G14QC2VX?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0BQ1K22GF?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ16mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DWN7HMNV?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DWN5RTSH?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0BSMTTP2Q?th=1" },
+                    { name: "厚さ4mm", url: "https://www.amazon.co.jp/dp/B0CJFDPD9L?th=1" },
+                    { name: "厚さ8mm", url: "https://www.amazon.co.jp/dp/B0BQ123RLK?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ20mm",
+                  children: [
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0G14WYGGD?th=1" },
+                    { name: "厚さ5mm", url: "https://www.amazon.co.jp/dp/B0G159CQ17?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ25mm",
+                  children: [
+                    { name: "厚さ5.5mm", url: "https://www.amazon.co.jp/dp/B0G151ZBZ8?th=1" },
+                  ]
+                }
+              ]
+            },
+            
+            {
+              name: "N54",
+              children: [
+                {
+                  name: "直径φ2mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DSF1VF6C?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DSDXWTCL?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DSF7MMXB?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0DZPCWP4P?th=1" },
+                    { name: "厚さ4mm", url: "https://www.amazon.co.jp/dp/B0DZ6TGT2Y?th=1" },
+                    { name: "厚さ5mm", url: "https://www.amazon.co.jp/dp/B0DZNZD83W?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ3mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DF2KZKSJ?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DDQ47W8N?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0CNCD5PB2?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0CNJVTRC8?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ4mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0CNJYCSB9?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DVC19HVM?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0CNK5N6GQ?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0CNP34ZLC?th=1" },
+                    { name: "厚さ4mm", url: "https://www.amazon.co.jp/dp/B0CNPB3HRY?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ5mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DW38K84C?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DVXQF86H?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DW3STKBV?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ6mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DW46M4C3?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DVLGJ9L4?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0DWMSM5H5?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ7mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FBWBC5CQ?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FBWH39Y6?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ8mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FX5FLF5R?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FBVT2KTS?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ9mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FBWBBKRX?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FBW4PXK1?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ10mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DVXYY1MP?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0F32XF2C1?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0F38BWLJB?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0F38KTC1X?th=1" },
+                  ]
+                }
+              ]
+            },
+              
+            {
+              name: "N48SH",
+              children: [
+                {
+                  name: "直径φ2mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWRRWD2N?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ3mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWQLYX31?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FWQBZ5ZW?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0FWQK6BL8?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0FWQY3J2Z?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ4mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWQ14GQW?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FWQ7PRQX?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0FWQ98KFY?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ5mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWRJWDQV?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FWRP61JB?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ6mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWRL5SHX?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FWRQHHKS?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ10mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWCZX3ZP?th=1" },
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        
+        {
+          name: "角形磁石",
+          children: [
+            {
+              name: "N35",
+              children: [
+                {
+                  name: "4mmx4mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BQ622YHV?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0C7YTF8KG?th=1" },
+                  ]
+                },
+                {
+                  name: "5mmx5mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BQ5Z8XT7?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0BQ62MVXM?th=1" },
+                  ]
+                },
+                {
+                  name: "10mmx5mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BQ65CP2V?th=1" },
+                  ]
+                },
+                {
+                  name: "10mmx10mm",
+                  children: [
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0BQ67TDJ9?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0BQ65NQCM?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0C85KF88Z?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0F12KPZ9F?th=1" },
+                  ]
+                },
+                {
+                  name: "20mmx10mm",
+                  children: [
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0G15K5RNC?th=1" },
+                    { name: "厚さ5mm", url: "https://www.amazon.co.jp/dp/B0BQ6B1SHG?th=1" },
+                  ]
+                }
+              ]
+            },
+            
+            {
+              name: "N54",
+              children: [
+                {
+                  name: "4mmx4mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DK8TWXPG?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0CNQB6R6M?th=1" },
+                  ]
+                },
+                {
+                  name: "5mmx5mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DF2P1R64?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DK8WNMZ4?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0DK8VTCPD?th=1" },
+                  ]
+                },
+                {
+                  name: "6mmx6mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FPDXJ3VW?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FPKV1KQ1?th=1" },
+                  ]
+                },
+                {
+                  name: "7mmx7mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FXB7K4SD?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FXBFYXBK?th=1" },
+                  ]
+                },
+                {
+                  name: "8mmx8mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FXL4V1BS?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FXN1HCY5?th=1" },
+                  ]
+                },
+                {
+                  name: "9mmx9mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FXN1FV2J?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FXMZMVB5?th=1" },
+                  ]
+                },
+                {
+                  name: "10mmx5mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DK8ZVZWV?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0CNRF3GYG?th=1" },
+                    { name: "厚さ1.5mm", url: "https://www.amazon.co.jp/dp/B0F3P52HHP?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0F3P5JYGK?th=1" },
+                  ]
+                },
+                {
+                  name: "10mmx10mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0DK914ZL2?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0DK94QTQM?th=1" },
+                    { name: "厚さ2mm", url: "https://www.amazon.co.jp/dp/B0FCRRKXBL?th=1" },
+                    { name: "厚さ3mm", url: "https://www.amazon.co.jp/dp/B0DZTJNN2B?th=1" },
+                  ]
+                }
+              ]
+            },
+            
+            {
+              name: "N48SH",
+              children: [
+                {
+                  name: "10mmx5mm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FWJRKQJV?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FW5FKMYX?th=1" },
+                  ]
+                },
+                {
+                  name: "10mmx10mmm",
+                  children: [
+                    { name: "厚さ0.5mm", url: "https://www.amazon.co.jp/dp/B0FYQ9H736?th=1" },
+                    { name: "厚さ1mm", url: "https://www.amazon.co.jp/dp/B0FYQ9CTLY?th=1" },
+                  ]
+                }
+              ]
+            }
+            
+            
+          ]
+        },
+        
+        {
+          name: "丸形皿穴",
+          children: [
+            {
+              name: "N35",
+              children: [
+                {
+                  name: "直径φ8mm",
+                  children: [
+                    { name: "厚さ4mm(M3)", url: "https://www.amazon.co.jp/dp/B0CDG8LD5B?th=1" },
+                    { name: "厚さ5mm(M3)", url: "https://www.amazon.co.jp/dp/B0BQ5Y9BGF?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ12mm",
+                  children: [
+                    { name: "厚さ5mm(M4)", url: "https://www.amazon.co.jp/dp/B0CJY19RTQ?th=1" },
+                  ]
+                },
+                {
+                  name: "直径φ15mm",
+                  children: [
+                    { name: "厚さ5mm(M4)", url: "https://www.amazon.co.jp/gp/product/B0CMTK9JMF?th=1" },
+                  ]
+                },
+              ]
+            }
+          ]
+        },
+        
+        {
+          name: "角形皿穴",
+          children: [
+            {
+              name: "N35",
+              children: [
+                {
+                  name: "10mmx10mm",
+                  children: [
+                    { name: "厚さ3mm(M3)", url: "https://www.amazon.co.jp/dp/B0DKNN85Z5?th=1" },
+                  ]
+                },
+                {
+                  name: "15mmx15mm",
+                  children: [
+                    { name: "厚さ3mm(M3)", url: "https://www.amazon.co.jp/dp/B0DKNTHWRZ?th=1" },
+                  ]
+                },
+                {
+                  name: "20mmx10mm",
+                  children: [
+                    { name: "厚さ3mm(M4)", url: "https://www.amazon.co.jp/dp/B0F13SR8Y9?th=1" },
+                  ]
+                },
+                {
+                  name: "40mmx10mm",
+                  children: [
+                    { name: "厚さ3mm(M3x2)", url: "https://www.amazon.co.jp/dp/B0DVT9BZKP?th=1" },
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "ねこピタ",
+      children: [
+        { name: "茶色(2個セット)", url: "https://www.amazon.co.jp/dp/B0BVB6RS1D?th=1" },
+        { name: "青色(2個セット)", url: "https://www.amazon.co.jp/dp/B0BVB75WJC?th=1" },
+        { name: "白色(2個セット)", url: "https://www.amazon.co.jp/dp/B0BVB7XHB3?th=1" },
+        { name: "赤色(2個セット)", url: "https://www.amazon.co.jp/dp/B0BVB7K2WH?th=1" },
+      ]
+    },
+    
+    {
+      name: "ぷにゃマグ",
+      children: [
+        { name: "白・黒・茶色", url: "https://www.amazon.co.jp/dp/B0BSL13DP3?th=1" },
+        { name: "茶色", url: "https://www.amazon.co.jp/dp/B0BSL1ZS9V?th=1" },
+        { name: "黒色", url: "https://www.amazon.co.jp/dp/B0BSL2LCMV?th=1" },
+        { name: "白色", url: "https://www.amazon.co.jp/dp/B0BSKYKBCT?th=1" },
+      ]
+    },
+    
+    {
+      name: "マグネットビーズ",
+      children: [
+        {
+          name: "球型",
+          children: [
+            { name: "直径φ3mm", url: "https://www.amazon.co.jp/dp/B0CKYQXG9R?th=1" },
+            { name: "直径φ4mm", url: "https://www.amazon.co.jp/dp/B0CKYQKS4M?th=1" },
+            { name: "直径φ5mm", url: "https://www.amazon.co.jp/dp/B0CKYSYDWY?th=1" },
+          ]
+        },
+        {
+          name: "アーモンド型",
+          children: [
+            { name: "5mmx8mm", url: "https://www.amazon.co.jp/dp/B0CKL71MVN?th=1" },
+          ]
+        },
+        {
+          name: "レンズ型",
+          children: [
+            { name: "直径φ4mm", url: "https://www.amazon.co.jp/dp/B0CKYRNQJP?th=1" },
+          ]
+        },
+        {
+          name: "ドラム型",
+          children: [
+            { name: "3mmx3mm", url: "https://www.amazon.co.jp/dp/B0CKSSBPMH?th=1" },
+          ]
+        },
+        {
+          name: "ねじれ四角柱型",
+          children: [
+            { name: "4mmx7mm", url: "https://www.amazon.co.jp/dp/B0CKT6GCQB?th=1" },
+          ]
+        },
+        {
+          name: "ハート型",
+          children: [
+            { name: "直径6mm", url: "https://www.amazon.co.jp/dp/B0CKT7FZLF?th=1" },
+          ]
+        }
+      ]
+    },
+    
+    {
+      name: "マグネットフック",
+      children: [
+        {
+          name: "1.5kg",
+          children: [
+            { name: "1個", url: "https://www.amazon.co.jp/dp/B0F245Q7B1?th=1" },
+            { name: "3個", url: "https://www.amazon.co.jp/dp/B0F247NGR6?th=1" },
+          ]
+        },
+        {
+          name: "3kg",
+          children: [
+            { name: "1個", url: "https://www.amazon.co.jp/dp/B0F246NQVN?th=1" },
+            { name: "3個", url: "https://www.amazon.co.jp/dp/B0F246KH9S?th=1" },
+          ]
+        },
+        {
+          name: "6kg",
+          children: [
+            { name: "1個", url: "https://www.amazon.co.jp/dp/B0F2459KWD?th=1" },
+            { name: "3個", url: "https://www.amazon.co.jp/dp/B0F248NJRJ?th=1" },
+          ]
+        },
+        {
+          name: "10kg",
+          children: [
+            { name: "1個", url: "https://www.amazon.co.jp/dp/B0F2446894?th=1" },
+            { name: "3個", url: "https://www.amazon.co.jp/dp/B0F245G2K9?th=1" },
+          ]
+        },
+        {
+          name: "15kg",
+          children: [
+            { name: "1個", url: "https://www.amazon.co.jp/dp/B0F2446C7V?th=1" },
+            { name: "3個", url: "https://www.amazon.co.jp/dp/B0F2474WSC?th=1" },
+          ]
+        }
+      ]
+    },
+    
+    {
+      name: "ピンマグネット",
+      children: [
+        { name: "Sサイズ", url: "https://kyokei-store.jp/products/強力ピンマグネット-sサイズ-1個" },
+        { name: "Mサイズ", url: "https://kyokei-store.jp/products/強力ピンマグネットmサイズ-1個" },
+      ]
+    }
+    
+  ];
+
+  // === ツリー生成関数 ===
+  function createTree(data, parentIdPrefix = "") {
+    const ul = document.createElement("ul");
+    ul.classList.add("tree");
+
+    data.forEach((item, index) => {
+      const li = document.createElement("li");
+
+      // 一意なIDを生成
+      const id = parentIdPrefix + "node" + index;
+
+      if (item.children) {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = id;
+
+        const label = document.createElement("label");
+        label.htmlFor = id;
+        label.textContent = item.name;
+
+        li.appendChild(checkbox);
+        li.appendChild(label);
+
+        // 再帰的に子を追加
+        li.appendChild(createTree(item.children, id + "_"));
+      } else if (item.url) {
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.textContent = item.name;
+        link.target = "_blank";
+        li.appendChild(link);
+      }
+
+      ul.appendChild(li);
+    });
+
+    return ul;
+  }
+
+  // === 実行 ===
+  document.getElementById("treeContainer").appendChild(createTree(treeData));
+</script>
+
+</body>
+</html>

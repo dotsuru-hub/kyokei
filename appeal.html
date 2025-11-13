@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>他社比較</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* ボタンを上に、画像を下に配置 */
+    justify-content: center; /* 横中央寄せ */
+    align-items: center;     /* 縦中央寄せ */
+    height: 100vh;
+    background-color: #fff;  /* 背景色 */
+  }
+
+.back-button {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    background-color: #0056E3; /* 青ボタン */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .back-button:hover {
+    background-color: #007BFF;
+  }
+
+  img {
+    max-width: 90%;  /* 画面幅の90%まで */
+    max-height: 90%; /* 画面高さの90%まで */
+    object-fit: contain; /* はみ出さず縮小 */
+    opacity: 0; /* 最初は透明 */
+    transform: scale(0.97); /* 少し小さくしておく */
+    transition: opacity 1s ease, transform 1s ease; /* 1secでなめらかに変化 */
+  }
+  
+  /*  フェードイン用クラス */
+  img.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+</head>
+
+<body>
+  <!-- 戻るボタン -->
+  <button class="back-button" onclick="goBack()">戻る</button>
+
+  <!-- アピールポイント説明画像 -->
+  <img src="" id="mainImage" alt="">
+  
+  <script>
+    // URLパラメータで画像を取得して表示
+    const params = new URLSearchParams(window.location.search);
+    const imgSrc = params.get('img');
+    const mainImage = document.getElementById('mainImage');
+    
+    if (imgSrc) {
+      mainImage.src = imgSrc;
+      // 画像が読込まれたらフェードイン
+      mainImage.onload = () => {
+        mainImage.classList.add('show');
+      };
+    }
+    
+    // [戻る]処理
+    function goBack() {
+      if (window.top && window.top.frames['main']) {
+        // frameset構成の場合：mainフレームをmain.htmlに戻す
+        window.top.frames['main'].location.href = "main.html";
+      } else {
+        // 念のため、単独表示の場合（デバッグ時など）にも対応
+        window.location.href = "main.html";
+      }
+    }
+    
+  </script>
+</body>
+</html>

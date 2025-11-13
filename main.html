@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>共計ネットストア</title>
+<style>
+  body {
+    margin: 0;
+    background-color: #000; /* 黒背景 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  body.show {
+    opacity: 1;
+  }
+
+  /* === 上の静止画部分 === */
+  .top {
+    width: 100%;
+    background-color: #111;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    position: relative; /* 子要素のabsoluteを基準にする */
+  }
+
+  .top-links {
+    position: absolute; /* 親.top を基準に配置 */
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px; /* ボタン間の隙間 */
+  }
+
+  /* ボタン風リンク */
+  .top-links a {
+    display: inline-block;
+    text-decoration: none; /* Underbarを消す */
+    background-color: #0056E3; /* 青ボタン */
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8em;
+    transition: background-color 0.2s;
+  }
+
+  .top-links a:hover {
+    background-color: #007BFF;
+  }
+
+  .top img {
+    width: 70%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  .top p {
+    color: #ff0;
+    font-size: 1.4em;
+    margin: 8px 0 0 0;
+  }
+
+  /* === スライダー部分 === */
+  .slider-container {
+    width: 100%;
+    background-color: #fff; /* 白背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* スライダー高さ */
+    overflow: hidden;
+  }
+
+  .slider {
+    display: flex;
+    width: calc(50vw * 8); /* 50 x 8枚 */
+    animation: scroll 40s linear infinite;
+  }
+
+  .slider img {
+    width: 40vw;
+    max-width: 400px;
+    min-width: 200px;
+    height: auto;
+    aspect-ratio: 12 / 9;
+    object-fit: cover; /* 白背景でも自然に */
+  }
+
+  .slider img:hover {
+    transform: scale(1.2);
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(40%); }
+    to { transform: translateX(-40%); }
+  }
+</style>
+
+<script>
+  window.onload = () => document.body.classList.add('show');
+</script>
+</head>
+
+<body>
+  <!-- 上の静止画 -->
+  <div class="top">
+    <!-- 左上リンク群 -->
+    <div class="top-links">
+      <a href="main.html" target="main">ホーム</a>
+      <a href="appeal.html?img=image/greeting.png" target="main">代表ご挨拶</a>
+      <a href="image/sample.mp4" target="_blank">製造過程</a>
+      <a href="appeal.html?img=image/ImageEx.jpg" target="main">品質比較</a>
+      <a href="appeal.html?img=image/ImageEx2.png" target="main">グレード</a>
+      <a href="appeal.html?img=image/products.png" target="main">磁石製品</a>
+      <a href="https://kyokei-store.jp/pages/contact" target="_blank">お問い合わせ</a>
+    </div>
+    <p>&nbsp</p>
+    <p>共計技研</p>
+    <img src="image/ImageTop.jpg" alt="トップ画像">
+  </div>
+
+  <!-- 下のスライダー部分（白背景） -->
+  <div class="slider-container">
+    <div class="slider">
+      <a href="https://www.amazon.co.jp/stores/page/01C5A073-2A41-4C02-947C-7E99BC8F97F3?ingress=2" target="_blank"><img src="image/Magnet01.jpg" alt=""></a> <!-- 丸型 -->
+      <a href="https://www.amazon.co.jp/stores/page/D1F76E32-F5C7-4C84-A169-9350738FD337?ingress=2" target="_blank"><img src="image/Magnet02.jpg" alt=""></a> <!-- 丸型 -->
+      <a href="https://www.amazon.co.jp/stores/page/B657ED7D-D902-4A01-A434-C040952BFB90?ingress=2" target="_blank"><img src="image/Magnet03.jpg" alt=""></a> <!-- 角型 -->
+      <a href="https://www.amazon.co.jp/stores/page/2618924C-8D30-4E0F-932A-721E6AAA3906?ingress=2" target="_blank"><img src="image/Magnet04.jpg" alt=""></a> <!-- マグフック -->
+      <a href="https://www.amazon.co.jp/stores/page/100EC24C-FD45-4590-BFDA-6453D6C9D054?ingress=2" target="_blank"><img src="image/Magnet05.jpg" alt=""></a> <!-- マグネットビーズ -->
+      <a href="https://kyokei-store.jp/products/強力ピンマグネットmサイズ-1個" target="_blank"><img src="image/Magnet06.jpg" alt=""></a> <!-- ピンマグネット -->
+      <a href="https://www.amazon.co.jp/stores/page/6F64A5DA-706A-409D-8A11-B549DB8BE1C2?ingress=2" target="_blank"><img src="image/Magnet07.jpg" alt=""></a> <!-- シリコンマグネット -->
+      <a href="https://www.amazon.co.jp/stores/page/6F64A5DA-706A-409D-8A11-B549DB8BE1C2?ingress=2" target="_blank"><img src="image/Magnet08.jpg" alt=""></a> <!-- シリコンマグネット -->
+      <a href="https://www.amazon.co.jp/stores/page/01C5A073-2A41-4C02-947C-7E99BC8F97F3?ingress=2" target="_blank"><img src="image/Magnet01.jpg" alt=""></a> <!-- 丸型 -->
+      <a href="https://www.amazon.co.jp/stores/page/D1F76E32-F5C7-4C84-A169-9350738FD337?ingress=2" target="_blank"><img src="image/Magnet02.jpg" alt=""></a> <!-- 丸型 -->
+    </div>
+  </div>
+</body>
+</html>
