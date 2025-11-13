@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="image/favicon.png">
+<title>KYOKEI STORE</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* 左メニュー部分 */
+  iframe[name="menu"] {
+    width: 330px;
+    height: 100vh;
+    border: none;
+  }
+
+  /* 右メイン部分 */
+  iframe[name="main"] {
+    flex: 1;
+    height: 100vh;
+    border: none;
+  }
+</style>
+</head>
+
+<body>
+  <iframe src="menu.html" name="menu"></iframe>
+  <iframe src="main.html" name="main"></iframe>
+</body>
+</html>
