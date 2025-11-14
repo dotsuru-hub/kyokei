@@ -106,6 +106,55 @@
     from { transform: translateX(40%); }
     to { transform: translateX(-40%); }
   }
+  
+  
+  /* === 上部メニューのドロップダウン === */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* メニューボタン部分（のちにデザイン変更できます） */
+  .menu-btn {
+    padding: 10px 18px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  /* メニューの中身 */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background: #333;
+    min-width: 120px;
+    max-width: 180px;
+    border-radius: 6px;
+    margin-top: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    z-index: 100;
+    white-space: nowrap; /* テキストを折り返さずに1行に */
+  }
+
+  .dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+  }
+
+  .dropdown-content a:hover {
+    background: #007BFF;
+  }
+
+  /* 開いたときの状態 */
+  .dropdown.active .dropdown-content {
+    display: block;
+  }
+  
 </style>
 
 <script>
@@ -119,7 +168,15 @@
     <!-- 左上リンク群 -->
     <div class="top-links">
       <a href="main.html" target="main">ホーム</a>
-      <a href="appeal.html?img=image/greeting.png" target="main">代表ご挨拶</a>
+      
+      <!-- ドロップダウン化 -->
+      <div class="dropdown">
+        <a href="#" target="main" class="dropdown-btn">会社情報</a>
+        <div class="dropdown-content">
+          <a href="appeal.html?img=image/greeting.png" target="main" class="dropdown-btn">代表ご挨拶</a>
+          <a href="appeal.html?img=image/contact.png" target="main" class="dropdown-btn">連絡先</a>
+        </div>
+      </div>
       <a href="image/sample.mp4" target="_blank">製造過程</a>
       <a href="appeal.html?img=image/ImageEx.jpg" target="main">品質比較</a>
       <a href="appeal.html?img=image/ImageEx2.png" target="main">グレード</a>
@@ -147,4 +204,22 @@
     </div>
   </div>
 </body>
+
+<script>
+  const dropdownBtn = document.querySelector('.dropdown-btn');
+  const dropdown = dropdownBtn.parentElement;
+
+  dropdownBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // ページ遷移防止
+    dropdown.classList.toggle('active');
+  });
+
+  // 外クリックで閉じる
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown')) {
+      dropdown.classList.remove('active');
+    }
+  });
+</script>
+
 </html>
