@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="image/favicon.png">
 <title>KYOKEI STORE</title>
 <style>
@@ -25,6 +26,23 @@
     height: 100vh;
     border: none;
   }
+  
+  /* スマホ（画面幅 600px 以下）の場合 */
+  @media screen and (max-width: 900px) {
+    body {
+      display: block;   /* 縦並び → 実質 menu だけにする */
+    }
+
+    iframe[name="menu"] {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    iframe[name="main"] {
+      display: none;   /* main を消す */
+    }
+  }
+
 </style>
 </head>
 
